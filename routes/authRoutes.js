@@ -1,6 +1,5 @@
 // *** 2 Requires to access to the users information ***
 
-// imported libraries
 const passport = require('passport');
 
 // way to export our Authentication-Routes-Function to our Express Server App
