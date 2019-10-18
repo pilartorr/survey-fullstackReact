@@ -8,7 +8,19 @@ const mongoose = require('mongoose');
 // The Users Class Model
 const User = mongoose.model('users');
 
-// Google-Strategy module configuration for the user-Auth
+// First: Generate a cookie-id into the data base to identify the user
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// Second: Find this cookie-id in the Data Base to pull it back out and turn it back into user at some point in the future.
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => {
+    done(null, user);
+  });
+});
+
+// Third: Identify the profile of the user in the Google-Provider when the user try to register or init section.
 passport.use(
   new GoogleStrategy(
     {
@@ -17,8 +29,18 @@ passport.use(
       callbackURL: '/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
-      new User({ googleId: profile.id }).save();
-      // save the data of every user into our MongoDB
+      // find if the user already has a Google account
+      User.findOne({ googleId: profile.id }).then(existingUser => {
+        if(existingUser) {
+          // confirm that the user already exists
+          done(null, existingUser);
+        } else {
+          // if the user doesn't exist, create a new user, save it and check it was saved.
+          new User({ googleId: profile.id })
+          .save()
+          .then(user => done(null, user));
+        }
+      });
     }
   )
 );
