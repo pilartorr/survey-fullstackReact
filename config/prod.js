@@ -3,5 +3,5 @@ module.exports = {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   mongoURI: process.env.MONGO_URI,
   cookiekey: process.env.COOKIE_KEY,
-  googleRedirectURI: 'https://serene-wave-55294.herokuapp.com/'
+  googleRedirectURI: 'https://serene-wave-55294.herokuapp.com'
 };
