@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport');
@@ -16,6 +17,8 @@ mongoose.connect(keys.mongoURI, {
 
 const app = express();
 
+// Assign the value to bodyParse.req for every post-request to Stripe
+app.use(bodyParser.json());
 // Tell Express that the browser must expire the Cookie-ID after 30 days.
 app.use(
   cookieSession({
@@ -28,8 +31,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// import the Authentication Routes Function into our Server App
+// import the Routes into our Server App
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 // use port 5000 unless there exists a preconfigured port
 const PORT = process.env.PORT || 5000;

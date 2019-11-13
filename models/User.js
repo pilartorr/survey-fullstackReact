@@ -6,8 +6,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 // Instance of Squema Object to design our User's information for our data base.
-const userSchema = new Schema ({
-  googleId: String
+const userSchema = new Schema({
+  googleId: String,
+  credits: { type: Number, default: 0 }
 });
 
 // include the User's model into our users collection
