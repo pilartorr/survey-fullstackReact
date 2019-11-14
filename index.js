@@ -5,6 +5,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Survey');
 require('./services/passport');
 
 //connect the server with data base through monso
@@ -34,6 +35,7 @@ app.use(passport.session());
 // import the Routes into our Server App
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 // routing in production
 if (process.env.NODE_ENV === 'production') {
